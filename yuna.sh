@@ -1,3 +1,4 @@
+
 red(){
     echo -e "\033[31m\033[01m$1\033[0m"
 }
@@ -14,10 +15,9 @@ purple(){
     echo -e "\033[35m\033[01m$1\033[0m"
 }
 
-# cài đặt docker 1
+# cài đặt nut 1
 function aapanelgoc(){
-cd /home
-curl -sO https://raw.githubusercontent.com/HasumikiYuna/docker_v2/main/docker.sh && bash docker.sh
+cd /home && bash <(curl -Ls https://raw.githubusercontent.com/HasumikiYuna/docker_v2/main/yuna.sh)
 red "đã cài đặt hoàn tất mời quý zị dùng luôn cho nóng>.<"
 }
 
@@ -37,6 +37,9 @@ function unspeedtest(){
 iptables -F && clear && echo "   đã mở khoá cho test speed khi dùng vpn !"
 
 }
+
+
+
 # gỡ cài đặt aapanel
 function uninstall(){
 service bt stop && chkconfig --del bt && rm -f /etc/init.d/bt && rm -rf /www/server/panel
