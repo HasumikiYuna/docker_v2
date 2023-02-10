@@ -103,6 +103,12 @@ error_detect_depends() {
   fi
 }
 
+# rm lock
+rm /var/lib/dpkg/lock-frontend
+rm /var/lib/dpkg/lock
+rm /var/lib/dpkg/lock-frontend
+rm /var/cache/apt/archives/lock
+
 # Pre-installation settings
 pre_install_docker_compose() {
   
