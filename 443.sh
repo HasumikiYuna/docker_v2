@@ -125,7 +125,7 @@ pre_install_docker_compose() {
   echo -e "Limit: ${limit}"
   echo "-------------------------------"
   
-  read -p " CertDomain (cerdm):" limit
+  read -p " CertDomain (cerdm):" cerdm
   [ -z "${cerdm}" ] && cerdm=0
   echo "-------------------------------"
   echo -e "CertDomain: ${cerdm}"
