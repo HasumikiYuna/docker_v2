@@ -126,7 +126,7 @@ pre_install_docker_compose() {
   echo "-------------------------------"
   
   read -p " CertDomain (cerdm):" cerdm
-  [ -z "${cerdm}" ] && cerdm=0
+  [ -z "${cerdm}" ] && cerdm="0"
   echo "-------------------------------"
   echo -e "CertDomain: ${cerdm}"
   echo "-------------------------------"
