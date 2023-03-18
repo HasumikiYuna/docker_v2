@@ -124,6 +124,12 @@ pre_install_docker_compose() {
   echo "-------------------------------"
   echo -e "Limit: ${limit}"
   echo "-------------------------------"
+  
+  read -p " CertDomain (cerdm):" limit
+  [ -z "${cerdm}" ] && cerdm=0
+  echo "-------------------------------"
+  echo -e "CertDomain: ${cerdm}"
+  echo "-------------------------------"
 
 }
  
@@ -223,6 +229,7 @@ EOF
   
   sed -i "s|NodeID:.*|NodeID: ${node_id}|" ./yunatls.yml
   sed -i "s|DeviceLimit:.*|DeviceLimit: ${limit}|" ./yunatls.yml
+  sed -i "s|CertDomain:.*|CertDomain: ${cerdm}|" ./yunatls.yml
 
 }
 
