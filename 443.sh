@@ -11,7 +11,7 @@ green='\033[0;32m'
 plain='\033[0m'
 operation=(Install Update UpdateConfig logs restart delete)
 # Make sure only root can run our script
-[[ $EUID -ne 0 ]] && echo -e "[${red}Error${plain}] Ê Cu Cho Xin Nhẹ Quyền ROOT Nào!" && exit 1
+[[ $EUID -ne 0 ]] && echo -e "[${red}Error${plain}] Chưa vào root kìa !, vui lòng xin phép ROOT trước!" && exit 1
 
 #Check system
 check_sys() {
@@ -95,10 +95,10 @@ get_char() {
 error_detect_depends() {
   local command=$1
   local depend=$(echo "${command}" | awk '{print $4}')
-  echo -e "[${green}Info${plain}] Đang Cài Chờ Chút ${depend}"
+  echo -e "[${green}Info${plain}] Bắt đầu cài đặt các gói ${depend}"
   ${command} >/dev/null 2>&1
   if [ $? -ne 0 ]; then
-    echo -e "[${red}Error${plain}] Tạch Rồi M Ơi ${red}${depend}${plain}"
+    echo -e "[${red}Error${plain}] Cài đặt gói không thành công ${red}${depend}${plain}"
     exit 1
   fi
 }
@@ -106,14 +106,14 @@ error_detect_depends() {
 # Pre-installation settings
 pre_install_docker_compose() {
 #install key_path
-    echo -e "[${Green}Key Hợp Lệ${plain}] Link Web : https://yunagrp.com"
-    read -p " Xin ID nút 80 Nào (Node_ID_Vmess):" node_id_vmess
+    echo -e "[${Green}Key Hợp Lệ${plain}] Link Web : https://aikocute.com"
+    read -p " ID nút (Node_ID_Vmess):" node_id_vmess
     [ -z "${node_id_vmess}" ] && node_id=0
     echo "-------------------------------"
     echo -e "Node_ID: ${node_id_vmess}"
     echo "-------------------------------"
 
-    read -p " Xin ID nút 443 nào (Node_ID_Trojan):" node_id_trojan
+    read -p " ID nút (Node_ID_Trojan):" node_id_trojan
     [ -z "${node_id_trojan}" ] && node_id=0
     echo "-------------------------------"
     echo -e "Node_ID: ${node_id_trojan}"
@@ -150,11 +150,11 @@ config_docker() {
 version: '3'
 services: 
   xrayr: 
-    image: yunagrp/xrayr:v1.7.4
+    image: aikocute/xrayr:v1.7.4
     volumes:
-      - ./yuna.yml:/etc/XrayR/yuna.yml # thư mục cấu hình bản đồ
+      - ./aiko.yml:/etc/XrayR/aiko.yml # thư mục cấu hình bản đồ
       - ./dns.json:/etc/XrayR/dns.json 
-      - ./YunaBlock:/etc/XrayR/YunaBlock
+      - ./AikoBlock:/etc/XrayR/AikoBlock
       - ./server.pem:/etc/XrayR/server.pem
       - ./privkey.pem:/etc/XrayR/privkey.pem
     restart: always
@@ -171,7 +171,7 @@ EOF
 }
 EOF
 
-  cat >yuna.yml <<EOF
+  cat >aiko.yml <<EOF
 Log:
   Level: none # Log level: none, error, warning, info, debug 
   AccessPath: # /etc/XrayR/access.Log
@@ -190,8 +190,8 @@ Nodes:
   -
     PanelType: "V2board" # Panel type: SSpanel, V2board, PMpanel, Proxypanel
     ApiConfig:
-      ApiHost: "https://lightspeed4g.pw"
-      ApiKey: "ultimate1234yuna"
+      ApiHost: "https://shopvpn.net"
+      ApiKey: "adminquangtien1234@gmail.com"
       NodeID: $node_id_trojan
       NodeType: Trojan # Node type: V2ray, Trojan, Shadowsocks, Shadowsocks-Plugin
       Timeout: 30 # Timeout for the api request
@@ -199,7 +199,7 @@ Nodes:
       EnableXTLS: false # Enable XTLS for V2ray and Trojan
       SpeedLimit: $limit_speed # Mbps, Local settings will replace remote settings, 0 means disable
       DeviceLimit: $limit # Local settings will replace remote settings, 0 means disable
-      RuleListPath: /etc/XrayR/YunaBlock # ./rulelist Path to local rulelist file
+      RuleListPath: /etc/XrayR/AikoBlock # ./rulelist Path to local rulelist file
     ControllerConfig:
       ListenIP: 0.0.0.0 # IP address you want to listen
       SendIP: 0.0.0.0 # IP address you want to send pacakage
@@ -230,8 +230,8 @@ Nodes:
   -
     PanelType: "V2board" # Panel type: SSpanel, V2board, PMpanel, Proxypanel
     ApiConfig:
-      ApiHost: "https://lightspeed4g.pw"
-      ApiKey: "ultimate1234yuna"
+      ApiHost: "https://shopvpn.net"
+      ApiKey: "adminquangtien1234@gmail.com"
       NodeID: $node_id_vmess
       NodeType: V2ray # Node type: V2ray, Trojan, Shadowsocks, Shadowsocks-Plugin
       Timeout: 30 # Timeout for the api request
@@ -239,7 +239,7 @@ Nodes:
       EnableXTLS: false # Enable XTLS for V2ray and Trojan
       SpeedLimit: $limit_speed # Mbps, Local settings will replace remote settings, 0 means disable
       DeviceLimit: $limit # Local settings will replace remote settings, 0 means disable
-      RuleListPath: /etc/XrayR/YunaBlock # ./rulelist Path to local rulelist file
+      RuleListPath: /etc/XrayR/AikoBlock # ./rulelist Path to local rulelist file
     ControllerConfig:
       ListenIP: 0.0.0.0 # IP address you want to listen
       SendIP: 0.0.0.0 # IP address you want to send pacakage
@@ -271,65 +271,65 @@ EOF
 
     cat >server.pem <<EOF
 -----BEGIN CERTIFICATE-----
-MIIEqjCCA5KgAwIBAgIUel32m/WKU3fpmqaU6isu2Jmu9RAwDQYJKoZIhvcNAQEL
+MIIEojCCA4qgAwIBAgIUSkeFKtQalNoaUIxYYIWDF6qBimAwDQYJKoZIhvcNAQEL
 BQAwgYsxCzAJBgNVBAYTAlVTMRkwFwYDVQQKExBDbG91ZEZsYXJlLCBJbmMuMTQw
 MgYDVQQLEytDbG91ZEZsYXJlIE9yaWdpbiBTU0wgQ2VydGlmaWNhdGUgQXV0aG9y
 aXR5MRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMRMwEQYDVQQIEwpDYWxpZm9ybmlh
-MB4XDTIzMDMyMjE4MDkwMFoXDTM4MDMxODE4MDkwMFowYjEZMBcGA1UEChMQQ2xv
+MB4XDTIzMDIxNzAzMDIwMFoXDTM4MDIxMzAzMDIwMFowYjEZMBcGA1UEChMQQ2xv
 dWRGbGFyZSwgSW5jLjEdMBsGA1UECxMUQ2xvdWRGbGFyZSBPcmlnaW4gQ0ExJjAk
 BgNVBAMTHUNsb3VkRmxhcmUgT3JpZ2luIENlcnRpZmljYXRlMIIBIjANBgkqhkiG
-9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkVyXlcjpZuUwo121avI9UGaMiZUhf2tgw6Cd
-1rMv6gEDG5XcDshWfUbPjeRQZl6liZaE8YspRnUywsuFoX8XGAy+PFKR0WIf93oa
-x5Ujcf1dkBatP6fpMF/aFbSFMLA55rXXLUsJNU6vHEWBYAQC6NnDUW/bHtXaqTdN
-hT7Bhgu1KNYVo8hpMLw59+LqmbvK2k2DzYuOimAGNsVN5y70p3jDHoT4ZukY2/Vu
-EU9divquroqup4GSuZSOLtWO+/A/ee/Sa0S03MbDBOUSJ5ZhVKluIjUWf+wtdIUG
-rZ4fbiCSIcIyBHs+LZK8V1c+e/pXzip8ejrr2CK5snCakQ5TYQIDAQABo4IBLDCC
-ASgwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcD
-ATAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBQlj0HH2PjrGYXiBd/RvzXZea/Y/DAf
+9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8JdfO/erpWQc7rR2elM6cyHDp46ie77HY2Mf
+Jyd9hjciholopsVNndL7yRdM1s7d/iWR0IFkWusnlpT+TH/U0Evziop4NNdsHBTj
+C504QkN3Hoc3QEBe/TwU/PBynaoQwEwRUmT1i3mSPwawPB99H4+0qhmF+A0fDJKU
+OPuHybM4zlkoUGHmnz8y9vbMPlu9Ql0+9mS8buGMN+etdJ683RzyUi0GOAu556xT
+Nx+VssvzVvt2Dm5XwoDdGm9VNkcLCNyDIowV+TWI9fkt+PgdoG5QvGa2wc3u2cCY
+sKVNnwizfAE+Bvk4QbFdLgaz+JJ35a15OSuwXAhAj0XB3YEyWQIDAQABo4IBJDCC
+ASAwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcD
+ATAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBTegOz8DmSnw5ytzvgSpg3X+8Mf7zAf
 BgNVHSMEGDAWgBQk6FNXXXw0QIep65TbuuEWePwppDBABggrBgEFBQcBAQQ0MDIw
 MAYIKwYBBQUHMAGGJGh0dHA6Ly9vY3NwLmNsb3VkZmxhcmUuY29tL29yaWdpbl9j
-YTAtBgNVHREEJjAkghEqLmxpZ2h0c3BlZWQ0Zy5wd4IPbGlnaHRzcGVlZDRnLnB3
-MDgGA1UdHwQxMC8wLaAroCmGJ2h0dHA6Ly9jcmwuY2xvdWRmbGFyZS5jb20vb3Jp
-Z2luX2NhLmNybDANBgkqhkiG9w0BAQsFAAOCAQEARA7kFOZSa7lR6IVuvMJ5NGg5
-xTEFmuv+e7tA74yjYX261/CT77htEMe5iVvQCNaVFX2WgvPM0MDVlLAXW0Qf8JhH
-qJps/8VomhBOeq30+GDkh274voLC36Pvu25bUESKI/+S1JU5tYYvV3ha8Fva07Do
-T52TW5LVG2CBuKxOI/ygrTEQPP6Le2uwzevgT5n0uZhZ2ucDsVug7bCjwDH0BUcD
-IeBemRzueF3pm10iCr5v5yIGkluf1U6MIt0tRbuYjGtC5lHqwhQTewiMprfVf4Qh
-+uoHdg0+wOWCnBIcbsQglc6cPoA3GWmlAisv6l4vGSDsIeHiOyMAPCro8Ledvw==
+YTAlBgNVHREEHjAcgg0qLnNob3B2cG4ubmV0ggtzaG9wdnBuLm5ldDA4BgNVHR8E
+MTAvMC2gK6AphidodHRwOi8vY3JsLmNsb3VkZmxhcmUuY29tL29yaWdpbl9jYS5j
+cmwwDQYJKoZIhvcNAQELBQADggEBAL0I5zehXCVHN770+6hzlBnYVsK2CZW3gtPj
+mMSSWgRRBKkpx4AoyCIOneSsC4K/IOTtD+RtcVhPONGwAwJd1clB4TQfhPicRoiF
+OReDfzFNuavuesAfzAJsOPNN9P6421OYOsk6WivVRvw338PkHCeuNToY1SmhwJ7W
+j8XOp8lO3KNp9PoZCQC0VadmKcVcOYyLWyZVk26eZXW054q2eYlXUTpnFWRA3mvS
++EhKeNle5WovBXaRjAKaMq2OUAvJtjsTyBEm2X12MRaErRQ8oUabwuQ2X/MVi3sQ
+3XFzFI0v/trCGWbAHR5DSqRrQVgUOAdJrCwJtwvGnS3CH5kxeM8=
 -----END CERTIFICATE-----
 EOF
     cat >privkey.pem <<EOF
 -----BEGIN PRIVATE KEY-----
-MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCRXJeVyOlm5TCj
-XbVq8j1QZoyJlSF/a2DDoJ3Wsy/qAQMbldwOyFZ9Rs+N5FBmXqWJloTxiylGdTLC
-y4WhfxcYDL48UpHRYh/3ehrHlSNx/V2QFq0/p+kwX9oVtIUwsDnmtdctSwk1Tq8c
-RYFgBALo2cNRb9se1dqpN02FPsGGC7Uo1hWjyGkwvDn34uqZu8raTYPNi46KYAY2
-xU3nLvSneMMehPhm6Rjb9W4RT12K+q6uiq6ngZK5lI4u1Y778D9579JrRLTcxsME
-5RInlmFUqW4iNRZ/7C10hQatnh9uIJIhwjIEez4tkrxXVz57+lfOKnx6OuvYIrmy
-cJqRDlNhAgMBAAECggEAAVOfIguz/p+JnLoUl2nnz5mp/3D0He+20b4/5oda4Pe6
-pagt2pgvOuQ4LXc3mSGUwO9V3gb7PNSBvrehC/bnGO332ADYahjrSgTMJQVqTgZm
-EdQ1J1My3IFJciCERSwckSuYb8ZDKqCB1mAXhM7wkFu5bb83uJ2yyc/ShixrE3w5
-F2+DmuQjHDTLmb0c098arSmtyeBIDIxC+CS8aTa3lHu1EA+v3AhGqsqDJXkYcx2N
-HYUM948bJu+3RRpwYOwX1NGTsbX5i/s/D4KA1tBundOvw+eUvC2/mEJB44iWGLEr
-g0EYwAV/BI5TC4OcJ6mqUYNmz7+tJeBP4ipZwI8mAQKBgQDMmonvfmKwJiBfJqRS
-MI3WZTQ+HeDuWssfmijtdbeivJHCyM8VIsKM65sizLQQ1ZCc1X+3R1wfc0M58zZc
-VnidE4DiiLRP47aKL13PrYqBHTdCB6gOiUPyyrHCMnu/eRDk067M/+TybHCLCYrx
-/Vm+BD4aK7pXiUHweHZfwj1Q4QKBgQC14GAkC+839U1zwsL7EpdiSWWxF3smOWZZ
-FwoHjABDOega6qf1QWrjb9/pXkpVO2EXAcrujfcHSt5EonerMF3mK2h1PuMaW8Dc
-3TSBawDwGjZECG0xJ54AIXZT0XD3B9U4YqBrjEQaMM2eWoSyPi7Ces8WUzcq1gma
-UO+eTdDSgQKBgFXY+cs9MldKiAakhgneSYUNjbAKhVg9TEEEQ+vumpBzoo0iCJGL
-tim+qaceUOdHVJgZlK7oCCVCDZEBFWwE9DKj/k4OoelrWCn+2dPLsvOduJPB9qey
-vIngtlkPKZEbURVSJGPrcrqs+UO9S0lhzgfGa/A7LMKR2tL1GGXxcBzBAoGBAKSZ
-3GjDJEzQhLgvm6b+vGMHajFLvvhpGmemoj0SR2qQDa/OjxM3kTUlGtBptXxNsSDR
-Tod3lAnViDM1lngn3dNhlbgGoiJIx9Mbn1lBLigekN4hgjDqWeRkZGKXOlVXkXDm
-UakD2N6bLHwUD+QAwvDflGvwBA2QiEBQ34u1gTgBAoGABuMO9W0HcWw9eg0Jy1Go
-/xaJf+MVPHLoAZB5fVd1oOulnCjmw28m4bZfpnxAWdC1sf4uwYEpAABKNY6OcdUe
-IYRa0335g7K1O+ts+sX1kXO9C1BqagQ8r0D6Iubv+/960aC+9CAY3mPTIc0rd6O0
-NTBeB+mq/rYHgdWwKMTpDuM=
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDwl18796ulZBzu
+tHZ6UzpzIcOnjqJ7vsdjYx8nJ32GNyKGiWimxU2d0vvJF0zWzt3+JZHQgWRa6yeW
+lP5Mf9TQS/OKing012wcFOMLnThCQ3cehzdAQF79PBT88HKdqhDATBFSZPWLeZI/
+BrA8H30fj7SqGYX4DR8MkpQ4+4fJszjOWShQYeafPzL29sw+W71CXT72ZLxu4Yw3
+5610nrzdHPJSLQY4C7nnrFM3H5Wyy/NW+3YOblfCgN0ab1U2RwsI3IMijBX5NYj1
++S34+B2gblC8ZrbBze7ZwJiwpU2fCLN8AT4G+ThBsV0uBrP4knflrXk5K7BcCECP
+RcHdgTJZAgMBAAECggEAFiginZ+v/5HKNlOJS7epfNvhrGcu4I2PyD/jKRRyc29V
+byVtbVpjTQMWrAzIx0mS2Sp1lMmtx8+7PBtplfr5ytsLyTj6XAdwzd9Aj5vBiBy1
+dirGtFSZSuIDHs44B/wXAdafi8J/eIJQLRy9EzRlLghqf3XNSCxRLTO8kcjcVv9M
+Jmr8z06Cpx1776Q6NnKeYzTnPSS6IL81LxbKms5chWATFiTwxqungjTSPtL06qhn
+iBzd6nAOLTLhin93wB+QjdBuWWrDKkwOAxd11Zz8nwHEDUvh5HpEHKDbPIUjoEep
+qgQHF3Cq/XlrrzfPF8q5NwGQVx3RmaQmVcNkIOFfXwKBgQD8xW5OG+RelGbeG2TM
+aqUMRIbW5OEUWGhqa0leOWtgcdyVoRnojsfRjKOkRalkv7DPLWZgTbPcszqefEhw
+FoJwqC9nwv/xepEBdE/IJa5gxLqR1hxG079ht2gY25B/wqx2X4UcRG8dZqcqvnak
+F3ewQqVNnqCk4h9CjTUnM/omkwKBgQDzqhzJhe+nEGq6JB2NnYN1zs6wbXkVZOgj
+Cbgh5+s4H01SWqw3/yOJb2aSlQd/SV2u95QbsweGI/31Q9PKx7MZWqzNltpPq96l
+nY0cD7ISB3rdHj1oV+ty0dePs3jbSe3VP7P3tMO6xyv+36WC3TBef/E63Z3pHwYc
+koCAWlvK4wKBgQDAUleDBqXTcIZ0J9Oh1OKPWvRdPPgkSr/neInyLy4Ly5ZSIqlb
+0IcoYSGBM5+XEGKuv5RNYdGf8p5/R4C2B+pnXQ/0muGyEdeSi7TITCNJbWWm4InT
+Ofk7mBiUETr4el5OEo9s2oTQkfJPC2upnlFqwsqTLEZ+La4rLNVsZpfGEQKBgQCo
+WYBKPB+4bb9PnGRO0+VgH+LuQrTF81Hv42c1BeeefwINRFh41+7VpgJYhF8Jssbn
+fGb4PFmWdIeiTZqnIBK+EcgSw4dSRI0wIAq+uJlvm3toCtyimxwx2In23ylBWXLZ
+Q4o0OtCA29up3RudrvUcVYl2Amh4CNdQJmhiRgvlwQKBgBGEWhb/04OqNc5M+pBR
+VD5RyHlIhXIXoZJE0fJAO1WYBPlCWNuGwUTt8Znl2kQX9v63K7rKYzI9bvEYrbnO
+lrQbH5fnNWj+qp0YvPYBCUrXbzoETnxnuf5evGfwstw9FXiiD1uRhp2dsWhDnHtG
+idCk4HB1baPX4eP5jacLMytr
 -----END PRIVATE KEY-----
 EOF
 
-    cat >YunaBlock <<EOF
+    cat >AikoBlock <<EOF
 .*whatismyip.*
 (.*.||)(ipaddress|whatismyipaddress|whoer|iplocation|whatismyip|checkip|ipaddress|showmyip).(org|com|net|my|to|co|vn|my)
 (.*\.||)(speed|speedtest|fast|speed.cloudflare|speedtest.xfinity|speedtestcustom|speedof|testmy|i-speed|speedtest.vnpt|nperf|speedtest.telstra|i-speed|merter|speed|speedcheck|zingfast)\.(com|cn|net|co|xyz|dev|edu|pro|vn|me|io|org|io)
@@ -365,7 +365,7 @@ chmod +x /usr/local/bin/docker-compose
   echo
   echo -e "Đã hoàn tất cài đặt phụ trợ ！"
   echo -e "0 0 */3 * *  cd /root/${cur_dir} && /usr/local/bin/docker-compose pull && /usr/local/bin/docker-compose up -d" >>/etc/crontab
-  echo -e "Cài đặt cập nhật thời gian kết thúc đã hoàn tất! YunaGRP scr sẽ update sau [${green}24H${plain}] Từ lúc bạn cài đặt"
+  echo -e "Cài đặt cập nhật thời gian kết thúc đã hoàn tất! hệ thống sẽ update sau [${green}24H${plain}] Từ lúc bạn cài đặt"
 }
 
 install_check() {
@@ -405,7 +405,7 @@ install_dependencies() {
       error_detect_depends "apt-get -y install ${depend}"
     done
   fi
-  echo -e "[${green}Info${plain}] Đặt múi giờ thành Tây Ninh GTM+7"
+  echo -e "[${green}Info${plain}] Đặt múi giờ thành Hồ Chí Minh GTM+7"
   ln -sf /usr/share/zoneinfo/Asia/Ho_Chi_Minh  /etc/localtime
   date -s "$(curl -sI g.cn | grep Date | cut -d' ' -f3-6)Z"
 
@@ -414,9 +414,9 @@ install_dependencies() {
 #update_image
 Update_xrayr() {
   cd ${cur_dir}
-  echo "Tải hình ảnh DOCKER YunaGRP"
+  echo "Tải hình ảnh DOCKER"
   docker-compose pull
-  echo "Bắt đầu chạy dịch vụ DOCKER YunaGRP"
+  echo "Bắt đầu chạy dịch vụ DOCKER"
   docker-compose up -d
 }
 
@@ -434,7 +434,7 @@ UpdateConfig_xrayr() {
   docker-compose down
   pre_install_docker_compose
   config_docker
-  echo "Bắt đầu chạy dịch vụ DOKCER YunaGRP"
+  echo "Bắt đầu chạy dịch vụ DOKCER"
   docker-compose up -d
 }
 
@@ -459,9 +459,9 @@ Install_xrayr() {
 # Initialization step
 clear
 while true; do
-  echo "-----XrayR By YunaGRP-----"
+  echo "-----XrayR Aiko-----"
   echo "Địa chỉ dự án và tài liệu trợ giúp:  https://github.com/AikoCute/XrayR"
-  echo "YunaGRP Edition"
+  echo "AikoCute Hột Me"
   echo "Vui lòng nhập một số để Thực Hiện Câu Lệnh:"
   for ((i = 1; i <= ${#operation[@]}; i++)); do
     hint="${operation[$i - 1]}"
