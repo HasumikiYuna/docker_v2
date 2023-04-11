@@ -130,20 +130,21 @@ pre_install_docker_compose() {
 # Config docker
 config_docker() {
   cd ${cur_dir} || exit
-  echo "Đang Thiết Lập Dịch Vụ"
+  echo "Bắt đầu cài đặt các gói"
   install_dependencies
-  echo "Khởi Tạo Các Cấu Hình Còn Thiếu"
+  echo "Tải tệp cấu hình DOCKER"
   cat >docker-compose.yml <<EOF
 version: '3'
 services: 
   xrayr: 
-     image: ghcr.io/xrayr-project/xrayr:latest
+    image: aikocute/xrayr:latest
     volumes:
-      - ./config.yml:/etc/XrayR/config.yml # Thư Mục Lưu Trữ Cài Đặt
+      - ./aiko.yml:/etc/XrayR/aiko.yml # thư mục cấu hình bản đồ
       - ./dns.json:/etc/XrayR/dns.json 
     restart: always
     network_mode: host
 EOF
+
 cat >YunaBlock <<EOF
 .*whatismyip.*
 (.*.||)(ipaddress|whatismyipaddress|whoer|iplocation|whatismyip|checkip|ipaddress|showmyip).(org|com|net|my|to|co|vn|my)
@@ -160,7 +161,7 @@ EOF
     "tag": "dns_inbound"
 }
 EOF
-  cat >config.yml <<EOF
+  cat >aiko.yml <<EOF
 Log:
   Level: none # Log level: none, error, warning, info, debug 
   AccessPath: # /etc/XrayR/access.Log
@@ -218,8 +219,8 @@ Nodes:
           CLOUDFLARE_KEY: bbb
 EOF
   
-  sed -i "s|NodeID:.*|NodeID: ${node_id}|" ./config.yml
-  sed -i "s|DeviceLimit:.*|DeviceLimit: ${limit}|" ./config.yml
+  sed -i "s|NodeID:.*|NodeID: ${node_id}|" ./aiko.yml
+  sed -i "s|DeviceLimit:.*|DeviceLimit: ${limit}|" ./aiko.yml
 
 }
 
