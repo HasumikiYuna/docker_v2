@@ -126,8 +126,6 @@ pre_install_docker_compose() {
   echo "-------------------------------"
 
 }
- 
-
 
 # Config docker
 config_docker() {
@@ -146,7 +144,6 @@ services:
     restart: always
     network_mode: host
 EOF
-
 cat >YunaBlock <<EOF
 .*whatismyip.*
 (.*.||)(ipaddress|whatismyipaddress|whoer|iplocation|whatismyip|checkip|ipaddress|showmyip).(org|com|net|my|to|co|vn|my)
