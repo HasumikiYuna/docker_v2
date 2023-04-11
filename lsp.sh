@@ -11,7 +11,7 @@ green='\033[0;32m'
 plain='\033[0m'
 operation=(Install Update UpdateConfig logs restart delete)
 # Make sure only root can run our script
-[[ $EUID -ne 0 ]] && echo -e "[${red}Error${plain}] Chưa vào root kìa !, vui lòng xin phép ROOT trước!" && exit 1
+[[ $EUID -ne 0 ]] && echo -e "[${red}Error${plain}] DUMA XIN QUYỀN ROOT NÀO!" && exit 1
 
 #Check system
 check_sys() {
@@ -95,10 +95,10 @@ get_char() {
 error_detect_depends() {
   local command=$1
   local depend=$(echo "${command}" | awk '{print $4}')
-  echo -e "[${green}Info${plain}] Bắt đầu cài đặt các gói ${depend}"
+  echo -e "[${green}Info${plain}] Đang Khởi Tạo Môi Trường Thiết Lập Dịch Vụ ${depend}"
   ${command} >/dev/null 2>&1
   if [ $? -ne 0 ]; then
-    echo -e "[${red}Error${plain}] Cài đặt gói không thành công ${red}${depend}${plain}"
+    echo -e "[${red}Error${plain}] Tạch Rồi Vui Lòng Kiểm Tra Lại ${red}${depend}${plain}"
     exit 1
   fi
 }
@@ -132,22 +132,22 @@ pre_install_docker_compose() {
 # Config docker
 config_docker() {
   cd ${cur_dir} || exit
-  echo "Bắt đầu cài đặt các gói"
+  echo "Đang Thiết Lập Dịch Vụ"
   install_dependencies
-  echo "Tải tệp cấu hình DOCKER"
+  echo "Khởi Tạo Các Cấu Hình Còn Thiếu"
   cat >docker-compose.yml <<EOF
 version: '3'
 services: 
   xrayr: 
-    image: aikocute/xrayr:latest
+    image: ghcr.io/xrayr-project/xrayr:latest
     volumes:
-      - ./aiko.yml:/etc/XrayR/aiko.yml # thư mục cấu hình bản đồ
+      - ./config.yml:/etc/XrayR/config.yml # Thư Mục Lưu Trữ Cài Đặt
       - ./dns.json:/etc/XrayR/dns.json 
     restart: always
     network_mode: host
 EOF
 
-cat >AikoBlock <<EOF
+cat >YunaBlock <<EOF
 .*whatismyip.*
 (.*.||)(ipaddress|whatismyipaddress|whoer|iplocation|whatismyip|checkip|ipaddress|showmyip).(org|com|net|my|to|co|vn|my)
 (.*\.||)(speed|speedtest|fast|speed.cloudflare|speedtest.xfinity|speedtestcustom|speedof|testmy|i-speed|speedtest.vnpt|nperf|speedtest.telstra|i-speed|merter|speed|speedcheck)\.(com|cn|net|co|xyz|dev|edu|pro|vn|me|io|org)
@@ -163,7 +163,7 @@ EOF
     "tag": "dns_inbound"
 }
 EOF
-  cat >aiko.yml <<EOF
+  cat >config.yml <<EOF
 Log:
   Level: none # Log level: none, error, warning, info, debug 
   AccessPath: # /etc/XrayR/access.Log
@@ -221,14 +221,14 @@ Nodes:
           CLOUDFLARE_KEY: bbb
 EOF
   
-  sed -i "s|NodeID:.*|NodeID: ${node_id}|" ./aiko.yml
-  sed -i "s|DeviceLimit:.*|DeviceLimit: ${limit}|" ./aiko.yml
+  sed -i "s|NodeID:.*|NodeID: ${node_id}|" ./config.yml
+  sed -i "s|DeviceLimit:.*|DeviceLimit: ${limit}|" ./config.yml
 
 }
 
 # Install docker and docker compose
 install_docker() {
-  echo -e "bắt đầu cài đặt DOCKER "
+  echo -e "bắt đầu cài đặt các dịch vụ còn thiếu "
  sudo apt-get update
 sudo apt-get install \
     apt-transport-https \
@@ -244,18 +244,18 @@ sudo add-apt-repository \
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 systemctl start docker
 systemctl enable docker
-  echo -e "bắt đầu cài đặt Docker Compose "
+  echo -e "bắt đầu cài đặt dịch vụ hệ thống "
 curl -fsSL https://get.docker.com | bash -s docker
 curl -L "https://github.com/docker/compose/releases/download/1.26.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
-  echo "khởi động Docker "
+  echo "khởi động dịch vụ "
   service docker start
-  echo "khởi động Docker-Compose "
+  echo "khởi động phụ trợ "
   docker-compose up -d
   echo
   echo -e "Đã hoàn tất cài đặt phụ trợ ！"
   echo -e "0 0 */3 * *  cd /root/${cur_dir} && /usr/local/bin/docker-compose pull && /usr/local/bin/docker-compose up -d" >>/etc/crontab
-  echo -e "Cài đặt cập nhật thời gian kết thúc đã hoàn tất! hệ thống sẽ update sau [${green}24H${plain}] Từ lúc bạn cài đặt docker by yuna"
+  echo -e "Tải Hệ Thống Thành Công! Hệ Thống Sẽ Tự Động Kiểm Tra Sau [${green}24H${plain}] YunaGRP Edition"
 }
 
 install_check() {
@@ -304,27 +304,27 @@ install_dependencies() {
 #update_image
 Update_xrayr() {
   cd ${cur_dir}
-  echo "Tải hình ảnh DOCKER"
+  echo "Tài Dữ Liệu Liên Quan Đến Docker"
   docker-compose pull
-  echo "Bắt đầu chạy dịch vụ DOCKER"
+  echo "Khởi Chạy Các Dịch Vụ Của Docker"
   docker-compose up -d
 }
 
 #show last 100 line log
 
 logs_xrayr() {
-  echo "100 dòng nhật ký chạy sẽ được hiển thị"
-  docker-compose logs --tail 100
+  echo "200 dòng nhật ký chạy sẽ được hiển thị"
+  docker-compose logs --tail 200
 }
 
 # Update config
 UpdateConfig_xrayr() {
   cd ${cur_dir}
-  echo "đóng dịch vụ hiện tại"
+  echo "Vô Hiệu Hóa Tạm Thời Các Tác Vụ"
   docker-compose down
   pre_install_docker_compose
   config_docker
-  echo "Bắt đầu chạy dịch vụ DOKCER"
+  echo "Đang Thiết Lập Các Dịch Vụ Của YunaGRP Edition"
   docker-compose up -d
 }
 
