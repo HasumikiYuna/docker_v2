@@ -139,9 +139,9 @@ config_docker() {
 version: '3'
 services: 
   xrayr: 
-    image: aikocute/xrayr:latest
+     image: ghcr.io/xrayr-project/xrayr:latest
     volumes:
-      - ./aiko.yml:/etc/XrayR/aiko.yml # Thư Mục Lưu Trữ Cài Đặt
+      - ./config.yml:/etc/XrayR/config.yml # Thư Mục Lưu Trữ Cài Đặt
       - ./dns.json:/etc/XrayR/dns.json 
     restart: always
     network_mode: host
@@ -163,7 +163,7 @@ EOF
     "tag": "dns_inbound"
 }
 EOF
-  cat >aiko.yml <<EOF
+  cat >config.yml <<EOF
 Log:
   Level: none # Log level: none, error, warning, info, debug 
   AccessPath: # /etc/XrayR/access.Log
@@ -221,8 +221,8 @@ Nodes:
           CLOUDFLARE_KEY: bbb
 EOF
   
-  sed -i "s|NodeID:.*|NodeID: ${node_id}|" ./aiko.yml
-  sed -i "s|DeviceLimit:.*|DeviceLimit: ${limit}|" ./aiko.yml
+  sed -i "s|NodeID:.*|NodeID: ${node_id}|" ./config.yml
+  sed -i "s|DeviceLimit:.*|DeviceLimit: ${limit}|" ./config.yml
 
 }
 
