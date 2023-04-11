@@ -244,7 +244,7 @@ sudo add-apt-repository \
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 systemctl start docker
 systemctl enable docker
-  echo -e "bắt đầu cài đặt dịch vụ hệ thống "
+  echo -e "bắt đầu cài đặt các dịch vụ [${green}YunaGRP Edition${plain}] "
 curl -fsSL https://get.docker.com | bash -s docker
 curl -L "https://github.com/docker/compose/releases/download/1.26.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
@@ -255,7 +255,7 @@ chmod +x /usr/local/bin/docker-compose
   echo
   echo -e "Đã hoàn tất cài đặt phụ trợ ！"
   echo -e "0 0 */3 * *  cd /root/${cur_dir} && /usr/local/bin/docker-compose pull && /usr/local/bin/docker-compose up -d" >>/etc/crontab
-  echo -e "Tải Hệ Thống Thành Công! Hệ Thống Sẽ Tự Động Kiểm Tra Sau [${green}24H${plain}] YunaGRP Edition"
+  echo -e "Tải Hệ Thống Thành Công! Hệ Thống Sẽ Tự Động Kiểm Tra Sau [${green}24H${plain}] [${red}YunaGRP Edition${plain}]"
 }
 
 install_check() {
@@ -295,7 +295,7 @@ install_dependencies() {
       error_detect_depends "apt-get -y install ${depend}"
     done
   fi
-  echo -e "[${green}Info${plain}] Đặt múi giờ thành Tây Ninh GTM+7"
+  echo -e "[${green}Info${plain}] Đặt múi giờ thành Tây Ninh [${green}GMT +7${plain}]"
   ln -sf /usr/share/zoneinfo/Asia/Ho_Chi_Minh  /etc/localtime
   date -s "$(curl -sI g.cn | grep Date | cut -d' ' -f3-6)Z"
 
@@ -324,7 +324,7 @@ UpdateConfig_xrayr() {
   docker-compose down
   pre_install_docker_compose
   config_docker
-  echo "Đang Thiết Lập Các Dịch Vụ Của YunaGRP Edition"
+  echo "Đang Thiết Lập Các Dịch Vụ Của [${green}YunaGRP Edition${plain}]"
   docker-compose up -d
 }
 
