@@ -73,7 +73,7 @@ cusstom_comand() {
 
       # Xem Log NextDNS
     nextdns log
-    log_info "NextDNS log sẽ được hiển thị"
+    log_info "Hoàn Tất"
 
     log_info "NextDNS log đã được hiển thị."
 }
