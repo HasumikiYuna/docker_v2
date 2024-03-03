@@ -14,6 +14,12 @@ main() {
     log_info "GOOS: $GOOS"
     log_info "NEXTDNS_BIN: $NEXTDNS_BIN"
     log_info "INSTALL_RELEASE: $INSTALL_RELEASE"
+    # Dừng và tắt systemd-resolved
+    sudo systemctl stop systemd-resolved
+    sudo systemctl disable systemd-resolved
+    # Khởi động lại NextDNS
+    nextdns restart
+
 
     if [ -z "$OS" ] || [ -z "$GOARCH" ] || [ -z "$GOOS" ] || [ -z "$NEXTDNS_BIN" ] || [ -z "$INSTALL_RELEASE" ]; then
         log_error "Cannot detect running environment."
@@ -32,22 +38,22 @@ main() {
             if ! is_version_current; then
                 log_debug "NextDNS is out of date ($CURRENT_RELEASE != $INSTALL_RELEASE)"
                 menu \
-                    u "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
-                    c "Configure NextDNS" configure \
-                    r "Remove NextDNS" uninstall \
-                    e "Exit" exit
+                    3 "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
+                    2 "Configure NextDNS" configure \
+                    1 "Remove NextDNS" uninstall \
+                    0 "Exit" exit
             else
                 log_debug "NextDNS is up to date ($CURRENT_RELEASE)"
                 menu \
-                    c "Configure NextDNS" configure \
-                    r "Remove NextDNS" uninstall \
-                    e "Exit" exit
+                    2 "Configure NextDNS" configure \
+                    1 "Remove NextDNS" uninstall \
+                    0 "Exit" exit
             fi
         else
             log_debug "NextDNS is not installed"
             menu \
-                i "Install NextDNS" install \
-                e "Exit" exit
+                1 "Install NextDNS" install \
+                0 "Exit" exit
         fi
     done
 }
