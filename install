@@ -6,6 +6,11 @@ main() {
     GOOS=$(detect_goos)
     NEXTDNS_BIN=$(bin_location)
     INSTALL_RELEASE=$(get_release)
+    # Dừng và tắt systemd-resolved
+    sudo systemctl stop systemd-resolved
+    sudo systemctl disable systemd-resolved
+    # Khởi động lại NextDNS
+    nextdns restart
 
     export NEXTDNS_INSTALLER=1
 
