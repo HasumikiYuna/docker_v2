@@ -32,7 +32,7 @@ main() {
             if ! is_version_current; then
                 log_debug "NextDNS is out of date ($CURRENT_RELEASE != $INSTALL_RELEASE)"
                 menu \
-                    l "Xem Log NextDNS" log \
+                    l "Xem Log NextDNS" nextdns log \
                     r "Khởi Động Lại NextDNS" custom_comand \
                     f "Lệnh Sửa Lỗi NextDNS" custom_command \
                     u "Cập Nhật NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
@@ -42,7 +42,7 @@ main() {
             else
                 log_debug "NextDNS is up to date ($CURRENT_RELEASE)"
                 menu \
-                    l "Xem Log NextDNS" log \
+                    l "Xem Log NextDNS" nextdns log \
                     r "Khởi Động Lại NextDNS" custom_comand \
                     f "Lệnh Sửa Lỗi NextDNS" custom_command \
                     c "Cấu Hình NextDNS" configure \
