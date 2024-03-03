@@ -35,30 +35,19 @@ main() {
                     u "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
                     c "Configure NextDNS" configure \
                     r "Remove NextDNS" uninstall \
-                    2 "Fix NextDNS"             sudo systemctl stop systemd-resolved
-            sudo systemctl disable systemd-resolved
-            nextdns restart \
-                    0 "Exit" exit
+                    e "Exit" exit
             else
                 log_debug "NextDNS is up to date ($CURRENT_RELEASE)"
                 menu \
-                    u "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
                     c "Configure NextDNS" configure \
                     r "Remove NextDNS" uninstall \
-                    2 "Fix NextDNS"             sudo systemctl stop systemd-resolved
-            sudo systemctl disable systemd-resolved
-            nextdns restart \
-                    0 "Exit" exit
+                    e "Exit" exit
             fi
         else
             log_debug "NextDNS is not installed"
             menu \
-                u "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
-                2 "Fix NextDNS"             sudo systemctl stop systemd-resolved
-            sudo systemctl disable systemd-resolved
-            nextdns restart \
-                1 "Install NextDNS" install \
-                0 "Exit" exit
+                i "Install NextDNS" install \
+                e "Exit" exit
         fi
     done
 }
@@ -84,17 +73,6 @@ install() {
         return $?
     fi
 }
-
-fixdns() {
-    # Dừng và tắt systemd-resolved
-    sudo systemctl stop systemd-resolved
-    sudo systemctl disable systemd-resolved
-
-    # Khởi động lại NextDNS
-    nextdns restart
-}
-
-
 
 upgrade() {
     if [ "$(get_current_release)" = "$INSTALL_RELEASE" ]; then
@@ -220,11 +198,10 @@ post_install() {
     println "You can use the NextDNS command to control the daemon."
     println "Here are a few important commands to know:"
     println
-    println "# Start, stop, restart, fix the daemon:"
+    println "# Start, stop, restart the daemon:"
     println "nextdns start"
     println "nextdns stop"
     println "nextdns restart"
-    println "nextdns fix"
     println
     println "# Configure the local host to point to NextDNS or not:"
     println "nextdns activate"
