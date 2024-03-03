@@ -43,6 +43,7 @@ main() {
             if ! is_version_current; then
                 log_debug "NextDNS is out of date ($CURRENT_RELEASE != $INSTALL_RELEASE)"
                 menu \
+                    4 "Fix ERROR" configurefix \
                     3 "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
                     2 "Configure NextDNS" configure \
                     1 "Remove NextDNS" uninstall \
@@ -50,6 +51,7 @@ main() {
             else
                 log_debug "NextDNS is up to date ($CURRENT_RELEASE)"
                 menu \
+                    3 "Fix ERROR" configurefix \
                     2 "Configure NextDNS" configure \
                     1 "Remove NextDNS" uninstall \
                     0 "Exit" exit
@@ -57,6 +59,7 @@ main() {
         else
             log_debug "NextDNS is not installed"
             menu \
+                2 "Fix ERROR" configurefix \
                 1 "Install NextDNS" install \
                 0 "Exit" exit
         fi
@@ -126,6 +129,16 @@ precheck() {
         log_info "Content Filtering feature successfully disabled."
     fi
 }
+
+configurefix() {
+    # Dừng và tắt systemd-resolved
+    sudo systemctl stop systemd-resolved
+    sudo systemctl disable systemd-resolved
+
+    # Khởi động lại NextDNS
+    nextdns restart
+}
+
 
 configure() {
     log_debug "Start configure"
