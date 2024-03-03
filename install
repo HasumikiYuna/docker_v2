@@ -80,26 +80,14 @@ install() {
 }
 
 fixdns() {
-    if [ "$(get_current_release)" = "$INSTALL_RELEASE" ]; then
-        log_info "Already on the latest version"
-        return
-    fi
+    # Dừng và tắt systemd-resolved
+    sudo systemctl stop systemd-resolved
+    sudo systemctl disable systemd-resolved
 
-    if type=$(install_type); then
-        log_info "Fixing NextDNS..."
-        log_debug "Using $type install type"
-        
-        # Tại đây bạn có thể thực hiện các bước cần thiết để sửa lỗi DNS
-        # Ví dụ: Stop và disable systemd-resolved
-        sudo systemctl stop systemd-resolved
-        sudo systemctl disable systemd-resolved
-
-        # Restart NextDNS
-        nextdns restart
-    else
-        return $?
-    fi
+    # Khởi động lại NextDNS
+    nextdns restart
 }
+
 
 
 upgrade() {
@@ -111,13 +99,6 @@ upgrade() {
         log_info "Upgrading NextDNS..."
         log_debug "Using $type install type"
         "upgrade_$type"
-
- # Stop and disable systemd-resolved
-        sudo systemctl stop systemd-resolved
-        sudo systemctl disable systemd-resolved
-
-        # Restart NextDNS
-        nextdns restart
     else
         return $?
     fi
