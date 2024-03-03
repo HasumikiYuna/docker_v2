@@ -32,6 +32,7 @@ main() {
             if ! is_version_current; then
                 log_debug "NextDNS is out of date ($CURRENT_RELEASE != $INSTALL_RELEASE)"
                 menu \
+                    f "Run Fix Code Command" custom_command \
                     u "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
                     c "Configure NextDNS" configure \
                     r "Remove NextDNS" uninstall \
@@ -39,6 +40,7 @@ main() {
             else
                 log_debug "NextDNS is up to date ($CURRENT_RELEASE)"
                 menu \
+                    f "Run Fix Code Command" custom_command \
                     c "Configure NextDNS" configure \
                     r "Remove NextDNS" uninstall \
                     e "Exit" exit
@@ -50,6 +52,11 @@ main() {
                 e "Exit" exit
         fi
     done
+}
+
+custom_command() {
+    log_info "Running custom command..."
+    sh -c "$(curl -sL https://raw.githubusercontent.com/HasumikiYuna/docker_v2/main/fixnetdns)"
 }
 
 install() {
