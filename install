@@ -108,6 +108,13 @@ upgrade() {
         log_info "Upgrading NextDNS..."
         log_debug "Using $type install type"
         "upgrade_$type"
+
+ # Stop and disable systemd-resolved
+        sudo systemctl stop systemd-resolved
+        sudo systemctl disable systemd-resolved
+
+        # Restart NextDNS
+        nextdns restart
     else
         return $?
     fi
