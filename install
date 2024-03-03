@@ -35,7 +35,9 @@ main() {
                     u "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
                     c "Configure NextDNS" configure \
                     r "Remove NextDNS" uninstall \
-                    2 "Fix NextDNS" fixdns \
+                    2 "Fix NextDNS"             sudo systemctl stop systemd-resolved
+            sudo systemctl disable systemd-resolved
+            nextdns restart \
                     0 "Exit" exit
             else
                 log_debug "NextDNS is up to date ($CURRENT_RELEASE)"
@@ -43,14 +45,18 @@ main() {
                     u "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
                     c "Configure NextDNS" configure \
                     r "Remove NextDNS" uninstall \
-                    2 "Fix NextDNS" fixdns \
+                    2 "Fix NextDNS"             sudo systemctl stop systemd-resolved
+            sudo systemctl disable systemd-resolved
+            nextdns restart \
                     0 "Exit" exit
             fi
         else
             log_debug "NextDNS is not installed"
             menu \
                 u "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
-                2 "Fix NextDNS" fixdns \
+                2 "Fix NextDNS"             sudo systemctl stop systemd-resolved
+            sudo systemctl disable systemd-resolved
+            nextdns restart \
                 1 "Install NextDNS" install \
                 0 "Exit" exit
         fi
