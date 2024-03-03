@@ -46,7 +46,7 @@ main() {
         else
             log_debug "NextDNS is not installed"
             menu \
-                2 "Fix NextDNS" fix error\
+                2 "Fix NextDNS" fix \
                 1 "Install NextDNS" install \
                 0 "Exit" exit
         fi
