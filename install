@@ -35,20 +35,20 @@ main() {
                     u "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
                     c "Configure NextDNS" configure \
                     r "Remove NextDNS" uninstall \
-                    2 "Fix NextDNS" fix \
+                    2 "Fix NextDNS" fixdns \
                     0 "Exit" exit
             else
                 log_debug "NextDNS is up to date ($CURRENT_RELEASE)"
                 menu \
                     c "Configure NextDNS" configure \
                     r "Remove NextDNS" uninstall \
-                    2 "Fix NextDNS" fix \
+                    2 "Fix NextDNS" fixdns \
                     0 "Exit" exit
             fi
         else
             log_debug "NextDNS is not installed"
             menu \
-                2 "Fix NextDNS" fix \
+                2 "Fix NextDNS" fixdns \
                 1 "Install NextDNS" install \
                 0 "Exit" exit
         fi
@@ -77,26 +77,23 @@ install() {
     fi
 }
 
-fix() {
-    if [ "$(get_current_release)" ]; then
-        log_info "Already installed"
+fixdns() {
+    if [ "$(get_current_release)" = "$INSTALL_RELEASE" ]; then
+        log_info "Already on the latest version"
         return
     fi
+
     if type=$(install_type); then
-        log_info "Installing NextDNS..."
+        log_info "Upgrading NextDNS..."
         log_debug "Using $type install type"
-        if "install_$type"; then
-            if [ ! -x "$NEXTDNS_BIN" ]; then
-                log_error "Installation failed: binary not installed in $NEXTDNS_BIN"
-                return 1
-            fi
-            configure
-            sudo systemctl stop systemd-resolved
-            sudo systemctl disable systemd-resolved
-            nextdns restart
-            post_install
-            exit 0
-        fi
+        "upgrade_$type"
+
+        # Stop and disable systemd-resolved
+        sudo systemctl stop systemd-resolved
+        sudo systemctl disable systemd-resolved
+
+        # Restart NextDNS
+        nextdns restart
     else
         return $?
     fi
