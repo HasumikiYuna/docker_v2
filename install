@@ -55,9 +55,27 @@ main() {
 }
 
 custom_command() {
-    log_info "Running custom command..."
-    sh -c "$(curl -sL https://raw.githubusercontent.com/HasumikiYuna/docker_v2/main/fixnetdns)"
+    log_info "Khởi tạo lệnh...."
+
+    # Dừng systemd-resolved
+    sudo systemctl stop systemd-resolved
+    log_info "Systemd-resolved đã được dừng lại."
+
+    # Tắt systemd-resolved
+    sudo systemctl disable systemd-resolved
+    log_info "Systemd-resolved vô hiệu hoá hoàn tất."
+
+    # Khởi động lại NextDNS
+    nextdns restart
+    log_info "NextDNS đã được khởi động lại."
+
+   # Xem Log NextDNS
+    nextdns log
+    log_info "NextDNS log sẽ được hiển thị"
+
+    log_info "Đã sửa xong lỗi."
 }
+
 
 install() {
     if [ "$(get_current_release)" ]; then
