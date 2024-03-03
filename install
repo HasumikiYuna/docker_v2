@@ -32,28 +32,39 @@ main() {
             if ! is_version_current; then
                 log_debug "NextDNS is out of date ($CURRENT_RELEASE != $INSTALL_RELEASE)"
                 menu \
-                    f "Run Fix Code Command" custom_command \
-                    u "Upgrade NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
-                    c "Configure NextDNS" configure \
-                    r "Remove NextDNS" uninstall \
-                    e "Exit" exit
+                    s "Khởi Động Lại NextDNS" custom_comand \
+                    f "Lệnh Sửa Lỗi NextDNS" custom_command \
+                    u "Cập Nhật NextDNS from $CURRENT_RELEASE to $INSTALL_RELEASE" upgrade \
+                    c "Cấu Hình NextDNS" configure \
+                    r "Xoá NextDNS" uninstall \
+                    e "Thoát" exit
             else
                 log_debug "NextDNS is up to date ($CURRENT_RELEASE)"
                 menu \
-                    f "Run Fix Code Command" custom_command \
-                    c "Configure NextDNS" configure \
-                    r "Remove NextDNS" uninstall \
-                    e "Exit" exit
+                    s "Khởi Động Lại NextDNS" custom_comand \
+                    f "Lệnh Sửa Lỗi NextDNS" custom_command \
+                    c "Cấu Hình NextDNS" configure \
+                    r "Xoá NextDNS" uninstall \
+                    e "Thoát" exit
             fi
         else
-            log_debug "NextDNS is not installed"
+            log_debug "NextDNS Không Được Cài Đặt"
             menu \
-                i "Install NextDNS" install \
-                e "Exit" exit
+                1 "Cài Đặt NextDNS" install \
+                0 "Thoát" exit
         fi
     done
 }
 
+custom_comand() {
+    log_info "Khởi động lại NextDNS"
+
+    # Khởi động lại NextDNS
+    nextdns restart
+    log_info "NextDNS đã được khởi động lại."
+
+    log_info "NextDNS đã được khởi động lại."
+}
 custom_command() {
     log_info "Khởi tạo lệnh...."
 
