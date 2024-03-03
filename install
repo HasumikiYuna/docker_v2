@@ -84,11 +84,11 @@ fixdns() {
     fi
 
     if type=$(install_type); then
-        log_info "Upgrading NextDNS..."
+        log_info "Fixing NextDNS..."
         log_debug "Using $type install type"
-        "upgrade_$type"
-
-        # Stop and disable systemd-resolved
+        
+        # Tại đây bạn có thể thực hiện các bước cần thiết để sửa lỗi DNS
+        # Ví dụ: Stop và disable systemd-resolved
         sudo systemctl stop systemd-resolved
         sudo systemctl disable systemd-resolved
 
@@ -98,6 +98,7 @@ fixdns() {
         return $?
     fi
 }
+
 
 upgrade() {
     if [ "$(get_current_release)" = "$INSTALL_RELEASE" ]; then
