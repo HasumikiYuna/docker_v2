@@ -72,9 +72,9 @@ rm /root/LinuxPanel_EN-6.8.23.zip /root/panel/ -rf
 # menu
 function start_menu(){
     clear
-    purple " chào mừng bạn đến với tool aapanel."
-    purple " zalo     : 0968343658"
-    purple " facebook : https://www.facebook.com/i.am.thai.ok"
+    purple " chào mừng bạn đến với tool aapanel by yunagrp."
+    purple " zalo     : zalo.me/yunagrp"
+    purple " facebook : https://www.facebook.com/YunaLoliOfficial"
     yellow " ————————————————————————————————————————————————"
     green " 1. cài đặt aapanel bản gốc( cho centos)"
     green " 2. block speedtest trên vps chạy VPN"
