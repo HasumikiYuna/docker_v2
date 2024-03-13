@@ -15,9 +15,9 @@ purple(){
     echo -e "\033[35m\033[01m$1\033[0m"
 }
 
-# cài đặt nut 1
-function aapanelgoc(){
-wget -O install.sh http://www.aapanel.com/script/install-ubuntu_6.0_en.sh && bash install.sh forum
+# cài đặt aapanel quốc tế
+function aapanelgoc(){ 
+wget -O install.sh http://www.aapanel.com/script/install-ubuntu_6.0_en.sh && bash install.sh forum aapanel
 red "đã cài đặt hoàn tất mời quý zị dùng luôn cho nóng>.<"
 }
 
@@ -29,13 +29,17 @@ red "đang cài bản tàu khựa"
 
 # bẻ khoá aapanel bản hiện tại
 function panelcrack(){  
-bash <(curl -Ls https://raw.githubusercontent.com/AZZ-vopp/Z_OV/main/script/Z_OVpanel.sh)
+sed -i 's|"endtime": -1|"endtime": 999999999999|g' /www/server/panel/data/plugin.json
+sed -i 's|"pro": -1|"pro": 0|g' /www/server/panel/data/plugin.json
+chattr +i /www/server/panel/data/plugin.json
 red "đã crack xong vui lòng f5 hoặc login lại aapanel"
 }
 # mở chặn speedtest
 function unspeedtest(){
 iptables -F && clear && echo "   đã mở khoá cho test speed khi dùng vpn !"
-
+cd /etc/iptables
+rm rules.v4 rules.v6
+reboot
 }
 
 
@@ -72,18 +76,18 @@ rm /root/LinuxPanel_EN-6.8.23.zip /root/panel/ -rf
 # menu
 function start_menu(){
     clear
-    purple " chào mừng bạn đến với tool aapanel by yunagrp."
+    purple " chào mừng bạn đến với tool aapanel."
     purple " zalo     : zalo.me/yunagrp"
     purple " facebook : https://www.facebook.com/YunaLoliOfficial"
     yellow " ————————————————————————————————————————————————"
-    green " 1. cài đặt aapanel bản gốc( cho centos)"
+    green " 1. cài đặt aapanel bản gốc(cho ubuntu)"
     green " 2. block speedtest trên vps chạy VPN"
     yellow " ————————————————————————————————————————————————"
     green " 3. hạ cấp xuống bản ổn định 6.8.23( 1 số chỗ tiếng gốc)"
     green " 4. mở khoá chặn speedtest ch vps vpn"
     green " 5. Crack bản aapanel hiện tại ( yêu tiên cài mới) "
     green " 6. anti lờ bốn"
-    green " 7. cài đặt aapanel bản tàu( cho centos)"
+    green " 7. cài đặt aapanel bản tàu(cho centos)"
     yellow " ————————————————————————————————————————————————"
     green " 8. gỡ cài đặt bản aapanel hiện tại"
     green " 9. chờ cập nhật tool mới"
