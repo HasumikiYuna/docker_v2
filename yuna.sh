@@ -17,7 +17,7 @@ purple(){
 
 # cài đặt nut 1
 function aapanelgoc(){
-cd /home && wget -O install.sh http://www.aapanel.com/script/install-ubuntu_6.0_en.sh && bash install.sh forum
+wget -O install.sh http://www.aapanel.com/script/install-ubuntu_6.0_en.sh && bash install.sh forum
 red "đã cài đặt hoàn tất mời quý zị dùng luôn cho nóng>.<"
 }
 
